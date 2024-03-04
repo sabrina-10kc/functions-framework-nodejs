@@ -119,13 +119,11 @@ const wrapHttpFunction = (execute: HttpFunction): RequestHandler => {
     d.on('error', errorHandler);
 
     d.run(() => {
-      process.nextTick(() => {
-        const ret = execute(req, res);
-        // Catch rejected promises if the function is async.
-        if (ret instanceof Promise) {
-          ret.catch(errorHandler);
-        }
-      });
+      const ret = execute(req, res);
+      // Catch rejected promises if the function is async.
+      if (ret instanceof Promise) {
+        ret.catch(errorHandler);
+      }
     });
   };
 };
